@@ -13,7 +13,7 @@ if [ ! -d "$PROJECT_DIRECTORY/.git" ]; then
   cd $PROJECT_DIRECTORY
   git remote add origin $REPO_URL
   git pull origin ${GIT_BRANCH:-main}
-  rsync -vazC $PROJECT_DIRECTORY/$SUBFOLDER ${DESTINATION_PATH:-/app/sync}
+  rsync -vazC --delete $PROJECT_DIRECTORY/$SUBFOLDER ${DESTINATION_PATH:-/app/sync}
 fi
 
 if [[ "$PWD" != "$PROJECT_DIRECTORY" ]]
@@ -27,8 +27,8 @@ while true; do
   git clean -fd
   sleep ${INTERVAL:-10}
   if [ -z "$SUBFOLDER" ]; then
-    rsync -vazC $PROJECT_DIRECTORY/ ${DESTINATION_PATH:-/app/sync}
+    rsync -vazC --delete $PROJECT_DIRECTORY/ ${DESTINATION_PATH:-/app/sync}
   else
-    rsync -vazC $PROJECT_DIRECTORY/$SUBFOLDER ${DESTINATION_PATH:-/app/sync}
+    rsync -vazC --delete $PROJECT_DIRECTORY/$SUBFOLDER ${DESTINATION_PATH:-/app/sync}
   fi
 done
